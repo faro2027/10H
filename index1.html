@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="pt"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Conceber o Design para Páginas Web</title>
+
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f1f5f9;color:#0f172a}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:#0f172a;color:white;padding:24px 16px;overflow-y:auto;z-index:1000}
+.logo{padding:5px 10px 25px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:20px}
+.logo small{display:block;color:#93c5fd;font-size:12px;margin-bottom:5px}
+.logo strong{display:block;font-size:18px;line-height:1.25}
+.nav-title{color:#64748b;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin:20px 10px 8px}
+.nav a{display:block;color:#cbd5e1;text-decoration:none;padding:9px 10px;border-radius:8px;font-size:14px;margin-bottom:2px}
+.nav a:hover{background:#1e293b;color:white}
+
+/* MAIN */
+.main{margin-left:260px;min-height:100vh}
+
+/* TOPBAR */
+.topbar{height:70px;background:white;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:900}
+.topbar-title{font-weight:bold;font-size:15px}
+.search{width:280px;padding:10px 14px;border:1px solid #cbd5e1;border-radius:8px;outline:none}
+.search:focus{border-color:#2563eb}
+
+/* CONTENT */
+.content{max-width:1250px;margin:auto;padding:30px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:white;border-radius:18px;padding:34px;margin-bottom:30px;box-shadow:0 15px 35px rgba(15,23,42,.15)}
+.hero-label{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:#93c5fd;margin-bottom:10px}
+.hero h2{font-size:34px;margin:0 0 12px}
+.hero p{max-width:800px;color:#dbeafe;line-height:1.6;margin-bottom:22px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:8px 12px;border-radius:20px;font-size:12px}
+
+/* HERO BOTTOM */
+.hero-bottom{display:grid;grid-template-columns:1fr 220px;gap:20px;align-items:stretch;margin-top:10px;margin-bottom:20px}
+.course-dates{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:0;padding:18px 0}
+.date-item{display:flex;flex-direction:column;gap:7px}
+.date-item label{font-size:12px;color:#bfdbfe}
+.date-item input{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:white;border-radius:8px;padding:9px 11px;font-family:inherit}
+.date-item input::-webkit-calendar-picker-indicator{filter:invert(1)}
+.class-highlight{min-height:150px;border-left:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px}
+.class-highlight small{font-size:11px;letter-spacing:2px;color:#bfdbfe;margin-bottom:2px}
+.class-highlight strong{font-size:52px;line-height:.95;font-weight:800;color:white}
+.class-highlight span{font-size:16px;font-weight:bold;letter-spacing:3px;color:#dbeafe;margin-top:7px}
+
+/* REFERENCE */
+.reference-button{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:white;text-decoration:none;padding:11px 15px;border-radius:9px;font-size:13px;font-weight:bold}
+.reference-button:hover{background:#3b82f6}
+
+/* PROGRESS */
+.progress-box{background:white;border:1px solid #e2e8f0;border-radius:14px;padding:20px;margin-bottom:30px}
+.progress-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.progress-top strong{font-size:15px}
+.progress-number{font-weight:bold;color:#2563eb}
+.progress-bar{height:10px;background:#e2e8f0;border-radius:20px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:#2563eb;border-radius:20px;transition:width .3s}
+
+/* SECTIONS */
+section{margin-bottom:40px;scroll-margin-top:95px}
+.section-title{margin-bottom:18px}
+.section-title h2{font-size:25px;margin:0 0 5px}
+.section-title p{margin:0;color:#64748b}
+
+/* CARDS */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:white;border:1px solid #e2e8f0;border-radius:14px;padding:20px}
+.card h3,.card h4{margin-top:0}
+.card p,.card li{color:#475569;line-height:1.55;font-size:14px}
+.card ul{padding-left:18px}
+
+/* CHECKLIST */
+.checklist{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.check-item{background:white;border:1px solid #e2e8f0;padding:12px 14px;border-radius:9px;display:flex;gap:10px;align-items:flex-start}
+.check-item input{margin-top:3px}
+.check-item span{font-size:14px;color:#475569;line-height:1.4}
+
+/* LESSONS */
+.lesson{background:white;border:1px solid #e2e8f0;border-radius:12px;margin-bottom:9px;overflow:hidden}
+.lesson-header{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;cursor:pointer}
+.lesson-title{font-weight:bold}
+.lesson-time{font-size:12px;color:#64748b}
+.lesson-body{display:none;border-top:1px solid #e2e8f0;padding:16px 18px}
+.lesson.open .lesson-body{display:block}
+.lesson-body p{color:#475569;line-height:1.55;margin-top:0}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;background:white;border-radius:14px;border:1px solid #e2e8f0}
+table{width:100%;border-collapse:collapse}
+th,td{padding:13px 15px;text-align:left;border-bottom:1px solid #e2e8f0;font-size:13px;vertical-align:top}
+th{background:#f8fafc;font-weight:bold}
+td{color:#475569}
+
+/* MATERIALS */
+.materials{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.material{background:white;border:1px solid #e2e8f0;border-radius:12px;padding:18px}
+.material strong{display:block;margin-bottom:7px}
+.material span{display:block;color:#64748b;font-size:13px;margin-bottom:12px}
+.material a{color:#2563eb;font-weight:bold;font-size:13px;text-decoration:none}
+.material a:hover{text-decoration:underline}
+
+/* FOOTER */
+footer{color:#64748b;text-align:center;font-size:12px;padding:25px 0 90px}
+
+/* MOBILE */
+.mobile-menu{display:none}
+@media(max-width:900px){
+.sidebar{transform:translateX(-100%);transition:transform .25s}
+.sidebar.show{transform:translateX(0)}
+.main{margin-left:0}
+.mobile-menu{display:block;border:none;background:transparent;font-size:22px;cursor:pointer}
+.topbar{padding:0 18px}
+.search{width:200px}
+.grid,.materials{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+.content{padding:18px}
+.hero{padding:23px}
+.hero h2{font-size:27px}
+.hero-bottom{grid-template-columns:1fr}
+.class-highlight{border-left:none;border-top:1px solid rgba(255,255,255,.25);min-height:130px}
+.class-highlight strong{font-size:44px}
+.grid,.materials,.checklist{grid-template-columns:1fr}
+.search{width:145px}
+.topbar-title{display:none}
+}
+
+/* EDITOR */
+.editor-toolbar{
+position:fixed;
+left:50%;
+bottom:16px;
+transform:translateX(-50%);
+z-index:5000;
+background:#0f172a;
+color:white;
+border:1px solid #334155;
+border-radius:14px;
+box-shadow:0 15px 40px rgba(0,0,0,.3);
+padding:9px 11px;
+display:flex;
+align-items:center;
+gap:7px;
+max-width:calc(100vw - 25px);
+flex-wrap:wrap;
+justify-content:center
+}
+.editor-toolbar button{
+border:none;
+background:#1e293b;
+color:white;
+padding:9px 12px;
+border-radius:8px;
+cursor:pointer;
+font-size:12px;
+font-weight:bold
+}
+.editor-toolbar button:hover{background:#334155}
+.editor-toolbar button.primary{background:#2563eb}
+.editor-toolbar button.primary:hover{background:#3b82f6}
+.editor-toolbar button.danger{background:#7f1d1d}
+.editor-status{font-size:11px;color:#cbd5e1;padding:0 7px;max-width:300px}
+.editor-auto{display:flex;align-items:center;gap:5px;font-size:11px;color:#cbd5e1;white-space:nowrap}
+body.edit-mode .editable-target:hover{outline:2px dashed #60a5fa;outline-offset:3px;cursor:text}
+.editing-now{outline:2px solid #2563eb!important;outline-offset:3px;background:rgba(37,99,235,.06)}
+body.edit-mode .editable-target{transition:outline .1s}
+
+@media print{
+.editor-toolbar{display:none!important}
+.sidebar{display:none}
+.main{margin-left:0}
+}
+</style>
+</head>
+
+<body class="">
+
+<aside class="sidebar" id="sidebar">
+    <div class="logo">
+        <small class="">10º</small>
+        <strong class="">MULTIMÉDIA</strong>
+    </div>
+
+    <div class="nav-title">Conteúdos</div>
+
+ <nav class="nav">
+            <a href="#inicio" class="active">                🏠 Início            </a>
+            <a href="#realizacoes">                🎯 Realizações            </a>
+            <a href="#conhecimentos">                📚 Conhecimentos            </a>
+            <a href="#aptidoes">                🛠️ Aptidões            </a>           
+			<a href="#atitudes">                💡 Atitudes            </a>
+            <a href="#criterios">                📋 Critérios            </a>
+            <a href="#plano">                🕐 Plano dos 30 tempos            </a>
+            <a href="#materiais">                📁 Materiais            </a>
+            <a href="#avaliacao">                ✅ Avaliação            </a>
+        </nav>
+</aside>
+
+<div class="main">
+
+<header class="topbar">
+    <div>
+        <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+        <span class="topbar-title">Desenvolvimento Web · Web Design</span>
+    </div>
+
+    <input type="search" class="search" id="search" placeholder="Pesquisar..." oninput="pesquisar()">
+</header>
+
+<main class="content">
+
+<section id="inicio">
+
+<div class="hero">
+
+<div class="hero-label"></div>
+
+<h2 class="">Conceber o design para páginas web</h2>
+
+<p class="">
+Planeamento, UX/UI, arquitetura de informação, wireframes,
+design responsivo, prototipagem, acessibilidade,
+testes de usabilidade e preparação de projetos web.
+</p>
+
+<div class="badges">
+<span class="badge">25 horas</span>
+<span class="badge">30 tempos</span>
+<span class="badge">Desenvolvimento Web</span>
+<span class="badge">Web Design / UI / UX</span>
+</div>
+
+<div class="hero-bottom">
+
+<div class="course-dates">
+
+<div class="date-item">
+<label for="dataInicio" class="">📅 Data de início</label>
+<input type="date" id="dataInicio" onchange="guardarDatas()">
+</div>
+
+<div class="date-item">
+<label for="dataFim" class="">📅 Data de término</label>
+<input type="date" id="dataFim" onchange="guardarDatas()">
+</div>
+
+</div>
+
+<div class="class-highlight">
+<small class="">TURMA</small>
+<strong class="">10ºH</strong>
+<span class="">MULTIMÉDIA</span>
+</div>
+
+</div>
+
+<a class="reference-button" href="https://catalogo.snq.gov.pt/ucDetalhe/357305" target="_blank">
+📋 Referencial obrigatório ↗
+</a>
+
+</div>
+
+<div class="progress-box">
+
+<div class="progress-top">
+<strong>Progresso das aptidões</strong>
+<span class="progress-number" id="progressNumber">0%</span>
+</div>
+
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+</div>
+
+</div>
+
+</section>
+
+<section id="realizacoes">
+
+<div class="section-title">
+<h2 class="">Realizações</h2>
+<p class="">Aluno deverá ser capaz de executar</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h3 class="">01 · Planear</h3>
+<p class="">
+Planear o projeto de design de uma página ou interface web,
+interpretando o briefing e identificando objetivos,
+utilizadores e conteúdos.
+</p>
+</div>
+
+<div class="card">
+<h3 class="">02 · Criar linha gráfica</h3>
+<p class="">
+Definir uma linha gráfica coerente, incluindo tipografia,
+cor, imagens, iconografia e componentes de interface.
+</p>
+</div>
+
+<div class="card">
+<h3 class="">03 · Ferramentas</h3>
+<p class="">
+Operar aplicações e plataformas adequadas ao processo
+de design e prototipagem web.
+</p>
+</div>
+
+<div class="card">
+<h3 class="">04 · Executar</h3>
+<p class="">
+Executar o projeto de acordo com os requisitos definidos,
+preparando os diferentes elementos gráficos.
+</p>
+</div>
+
+<div class="card">
+<h3 class="">05 · Prototipar</h3>
+<p class="">
+Criar protótipos interativos que permitam simular
+a navegação e interação do utilizador.
+</p>
+</div>
+
+<div class="card">
+<h3 class="">06 · Testar</h3>
+<p class="">
+Testar usabilidade e acessibilidade, recolher feedback
+e melhorar a solução final.
+</p>
+</div>
+
+</div>
+</section>
+
+<section id="conhecimentos">
+
+<div class="section-title">
+<h2 class="">Conhecimentos</h2>
+<p class="">Conceitos e conteúdos fundamentais da UC.</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h3 class="">Web Design</h3>
+<ul>
+<li class="">Características das páginas web</li>
+<li class="">Web design e desenvolvimento</li>
+<li class="">Interfaces digitais</li>
+<li class="">Conteúdos para web</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 class="">UX / UI</h3>
+<ul>
+<li class="">User Experience</li>
+<li class="">User Interface</li>
+<li class="">Arquitetura de informação</li>
+<li class="">Navegação e interação</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 class="">Design Visual</h3>
+<ul>
+<li class="">Tipografia</li>
+<li class="">Cor</li>
+<li class="">Ícones e símbolos</li>
+<li class="">Botões e componentes</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 class="">Responsive Design</h3>
+<ul>
+<li class="">Mobile-first</li>
+<li class="">Breakpoints</li>
+<li class="">Layouts adaptáveis</li>
+<li class="">Desktop / tablet / mobile</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 class="">Imagem e multimédia</h3>
+<ul>
+<li class="">Resolução</li>
+<li class="">Formatos de imagem</li>
+<li class="">Edição raster e vetorial</li>
+<li class="">Bancos de imagem e licenças</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 class="">Processo criativo</h3>
+<ul>
+<li class="">Briefing</li>
+<li class="">Brainstorming</li>
+<li class="">Mindmap</li>
+<li class="">Concept board</li>
+<li class="">Key visual</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 class="">Prototipagem</h3>
+<ul>
+<li class="">Wireframe</li>
+<li class="">Mockup</li>
+<li class="">Protótipo interativo</li>
+<li class="">Design system</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 class="">Acessibilidade</h3>
+<ul>
+<li class="">Design inclusivo</li>
+<li class="">Contraste</li>
+<li class="">Legibilidade</li>
+<li class="">Navegação acessível</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 class="">Organização</h3>
+<ul>
+<li class="">Gestão de ficheiros</li>
+<li class="">Exportação</li>
+<li class="">Direitos de autor</li>
+<li class="">Segurança e ambiente</li>
+</ul>
+</div>
+
+</div>
+</section>
+
+<section id="aptidoes">
+
+<div class="section-title">
+<h2 class="">Aptidões</h2>
+<p class="">Checklist de competências a desenvolver.</p>
+</div>
+
+<div class="checklist">
+
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Identificar as características e objetivos de uma página web.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Distinguir UX de UI e compreender a sua relação.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Realizar pesquisa sobre utilizadores e contexto.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Criar personas e user stories.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Estruturar a informação através de um sitemap.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Definir uma navegação clara e coerente.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Criar wireframes de baixa fidelidade.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Aplicar princípios de design mobile-first.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Definir breakpoints para diferentes dispositivos.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Criar um mini design system.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Utilizar componentes, variantes e Auto Layout.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Criar mockups e protótipos interativos.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Realizar testes de usabilidade.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Aplicar princípios de acessibilidade.</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateProgress()"><span>Preparar e organizar os ficheiros para entrega.</span></label>
+
+</div>
+</section>
+
+<section id="atitudes">
+
+<div class="section-title">
+<h2 class="">Atitudes</h2>
+<p class="">Comportamentos esperados.</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h3 class="">Organização</h3>
+<p class="">Manter ficheiros, versões e materiais devidamente organizados durante todo o projeto.</p>
+</div>
+
+<div class="card">
+<h3 class="">Autonomia</h3>
+<p class="">Procurar soluções e recursos de forma autónoma, recorrendo a referências adequadas.</p>
+</div>
+
+<div class="card">
+<h3 class="">Espírito crítico</h3>
+<p class="">Analisar soluções, identificar problemas e justificar decisões de design.</p>
+</div>
+
+<div class="card">
+<h3 class="">Colaboração</h3>
+<p class="">Comunicar ideias, aceitar feedback e colaborar no desenvolvimento do projeto.</p>
+</div>
+
+<div class="card">
+<h3 class="">Responsabilidade</h3>
+<p class="">Respeitar prazos, direitos de autor, licenças e boas práticas profissionais.</p>
+</div>
+
+<div class="card">
+<h3 class="">Inclusão</h3>
+<p class="">Considerar diferentes utilizadores e necessidades no processo de conceção.</p>
+</div>
+
+</div>
+</section>
+
+<section id="criterios">
+
+<div class="section-title">
+<h2 class="">Critérios de realização</h2>
+<p class="">Referenciais utilizados para orientar a execução.</p>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th class="">Área</th><th class="">Critério</th></tr>
+</thead>
+<tbody>
+<tr><td class="">Planeamento</td><td class="">O projeto é planeado tendo em conta briefing, objetivos, público-alvo e requisitos.</td></tr>
+<tr><td class="">Ferramentas</td><td class="">São selecionadas ferramentas adequadas às diferentes fases do projeto.</td></tr>
+<tr><td class="">Design</td><td class="">É definida uma linha gráfica coerente, incluindo tipografia, cor e componentes UI.</td></tr>
+<tr><td class="">Responsividade</td><td class="">A solução adapta-se a diferentes dimensões e dispositivos.</td></tr>
+<tr><td class="">Acessibilidade</td><td class="">São considerados princípios de design inclusivo, legibilidade e contraste.</td></tr>
+<tr><td class="">Usabilidade</td><td class="">O protótipo é testado e melhorado com base no feedback dos utilizadores.</td></tr>
+<tr><td class="">Exportação</td><td class="">Os elementos finais são preparados nos formatos adequados à utilização e entrega.</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="plano">
+
+<div class="section-title">
+<h2 class="">Plano dos 30 tempos</h2>
+<p class="">15 blocos de 2 tempos.</p>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">01 · Introdução ao Web Design e UC</span>
+<span class="lesson-time">Tempos 1–2</span>
+</div>
+<div class="lesson-body"><p class="">Apresentação da unidade, objetivos, projeto final, características das páginas web e enquadramento do design no desenvolvimento web.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">02 · UX e UI</span>
+<span class="lesson-time">Tempos 3–4</span>
+</div>
+<div class="lesson-body"><p class="">Diferenças entre UX e UI, relação entre experiência e interface e análise de exemplos.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">03 · Pesquisa e utilizadores</span>
+<span class="lesson-time">Tempos 5–6</span>
+</div>
+<div class="lesson-body"><p class="">Pesquisa, público-alvo, persona, necessidades, contexto e criação de user stories.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">04 · Arquitetura de informação</span>
+<span class="lesson-time">Tempos 7–8</span>
+</div>
+<div class="lesson-body"><p class="">Organização de conteúdos, sitemap, hierarquia, categorias e navegação.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">05 · Wireframes</span>
+<span class="lesson-time">Tempos 9–10</span>
+</div>
+<div class="lesson-body"><p class="">Wireframes de baixa fidelidade, estrutura das páginas, hierarquia visual e fluxo de navegação.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">06 · Mobile-first</span>
+<span class="lesson-time">Tempos 11–12</span>
+</div>
+<div class="lesson-body"><p class="">Estratégia mobile-first, layouts adaptáveis, breakpoints e necessidades dos diferentes dispositivos.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">07 · Tipografia e cor</span>
+<span class="lesson-time">Tempos 13–14</span>
+</div>
+<div class="lesson-body"><p class="">Seleção tipográfica, escalas, contraste, paletas, significado da cor e consistência visual.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">08 · Componentes e design system</span>
+<span class="lesson-time">Tempos 15–16</span>
+</div>
+<div class="lesson-body"><p class="">Design tokens, componentes, estados, variantes e consistência entre interfaces.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">09 · Figma e prototipagem</span>
+<span class="lesson-time">Tempos 17–18</span>
+</div>
+<div class="lesson-body"><p class="">Introdução ao Figma, componentes, Auto Layout, estilos e criação de protótipos.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">10 · Mockups</span>
+<span class="lesson-time">Tempos 19–20</span>
+</div>
+<div class="lesson-body"><p class="">Evolução dos wireframes para mockups de maior fidelidade, aplicação do design system e tratamento visual.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">11 · Protótipo interativo</span>
+<span class="lesson-time">Tempos 21–22</span>
+</div>
+<div class="lesson-body"><p class="">Construção de fluxos, interações, navegação e preparação do protótipo para teste.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">12 · Usabilidade</span>
+<span class="lesson-time">Tempos 23–24</span>
+</div>
+<div class="lesson-body"><p class="">Preparação de testes de usabilidade, tarefas, observação e recolha de feedback.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">13 · Acessibilidade</span>
+<span class="lesson-time">Tempos 25–26</span>
+</div>
+<div class="lesson-body"><p class="">Contraste, legibilidade, tamanhos, navegação, conteúdo alternativo e princípios de design inclusivo.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">14 · Testes e iteração</span>
+<span class="lesson-time">Tempos 27–28</span>
+</div>
+<div class="lesson-body"><p class="">Realização dos testes com utilizadores, análise dos problemas encontrados e melhoria da solução.</p></div>
+</div>
+
+<div class="lesson">
+<div class="lesson-header" onclick="toggleLesson(this)">
+<span class="lesson-title">15 · Entrega e apresentação</span>
+<span class="lesson-time">Tempos 29–30</span>
+</div>
+<div class="lesson-body"><p class="">Preparação dos ficheiros finais, handoff básico, apresentação do projeto e reflexão sobre o processo.</p></div>
+</div>
+
+</section>
+
+<section id="materiais">
+
+<div class="section-title">
+<h2 class="">Materiais</h2>
+<p class="">Os ficheiros devem estar na mesma pasta que este <strong>index.html</strong>.</p>
+</div>
+
+<div class="materials">
+
+<div class="material"><strong class="">📘 Sebenta</strong><span class="">Conteúdos teóricos da unidade.</span><a href="Sebenta.pdf" target="_blank">Abrir ficheiro ↗</a></div>
+<div class="material"><strong class="">📊 Slides</strong><span class="">Apresentações utilizadas nas aulas.</span><a href="Slides.pdf" target="_blank">Abrir ficheiro ↗</a></div>
+<div class="material"><strong class="">📝 Ficha 01</strong><span class="">UX, pesquisa e estrutura.</span><a href="Ficha_01.pdf" target="_blank">Abrir ficheiro ↗</a></div>
+<div class="material"><strong class="">📝 Ficha 02</strong><span class="">Responsive, sistema e testes.</span><a href="Ficha_02.pdf" target="_blank">Abrir ficheiro ↗</a></div>
+<div class="material"><strong class="">📄 Exercício 01</strong><span class="">Documento de trabalho.</span><a href="Exercicio_01.docx" target="_blank">Abrir ficheiro ↗</a></div>
+<div class="material"><strong class="">📄 Exercício 02</strong><span class="">Documento de trabalho.</span><a href="Exercicio_02.docx" target="_blank">Abrir ficheiro ↗</a></div>
+<div class="material"><strong class="">🚀 Projeto</strong><span class="">Enunciado do projeto final.</span><a href="Projeto.pdf" target="_blank">Abrir ficheiro ↗</a></div>
+<div class="material"><strong class="">📋 Critérios de avaliação</strong><span class="">Critérios utilizados na avaliação.</span><a href="Criterios_Avaliacao.pdf" target="_blank">Abrir ficheiro ↗</a></div>
+<div class="material"><strong class="">📝 Avaliação</strong><span class="">Documento de avaliação.</span><a href="Avaliacao.pdf" target="_blank">Abrir ficheiro ↗</a></div>
+<div class="material"><strong class="">✅ Soluções</strong><span class="">Soluções dos exercícios.</span><a href="Solucoes.pdf" target="_blank">Abrir ficheiro ↗</a></div>
+<div class="material"><strong class="">📎 Outro recurso</strong><span class="">Material complementar.</span><a href="Outro_Recurso.pdf" target="_blank">Abrir ficheiro ↗</a></div>
+
+</div>
+</section>
+
+<section id="avaliacao">
+
+<div class="section-title">
+<h2 class="">Avaliação</h2>
+<p class="">Distribuição dos elementos de avaliação.</p>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th class="">Elemento</th><th class="">Peso</th><th class="">Descrição</th></tr>
+</thead>
+<tbody>
+<tr><td class="">Pesquisa</td><td class="">10%</td><td class="">Persona, user stories e análise de referências.</td></tr>
+<tr><td class="">Sitemap / Navegação</td><td class="">10%</td><td class="">Estrutura da informação e navegação.</td></tr>
+<tr><td class="">Wireframes</td><td class="">15%</td><td class="">Wireframes mobile-first de baixa fidelidade.</td></tr>
+<tr><td class="">Design System</td><td class="">15%</td><td class="">Tokens, tipografia, cores e componentes.</td></tr>
+<tr><td class="">Mockups / Protótipo</td><td class="">20%</td><td class="">Qualidade visual e protótipo interativo.</td></tr>
+<tr><td class="">Usabilidade / Iteração</td><td class="">20%</td><td class="">Teste com 3 pessoas e aplicação do feedback.</td></tr>
+<tr><td class="">Acessibilidade / Defesa</td><td class="">10%</td><td class="">Acessibilidade, apresentação e justificação.</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<footer class="">
+Conceber o design para páginas web · 10.º Multimédia
+</footer>
+
+</main>
+</div>
+
+<!-- EDITOR -->
+
+
+
+<script>
+
+/* =====================================================
+   EDITOR
+===================================================== */
+
+let modoEdicao=false;
+let ficheiroHandle=null;
+let autoSaveTimer=null;
+let temAlteracoes=false;
+let elementoEmEdicao=null;
+let conteudoOriginal=null;
+
+const seletorEditavel=[
+".logo small",".logo strong",".nav-title",".nav a",
+".topbar-title",".hero-label",".hero h2",".hero p",
+".badge",".date-item label",".class-highlight small",
+".class-highlight strong",".class-highlight span",
+".section-title h2",".section-title p",".card h3",
+".card h4",".card p",".card li",".lesson-title",
+".lesson-time",".lesson-body p",".material strong",
+".material span","th","td","footer"
+].join(",");
+
+
+/* =====================================================
+   EDITAR
+===================================================== */
+
+function alternarEdicao(){
+
+modoEdicao=!modoEdicao;
+
+document.body.classList.toggle("edit-mode",modoEdicao);
+
+const botao=document.getElementById("editButton");
+
+if(modoEdicao){
+
+botao.textContent="✖ Sair da edição";
+
+prepararElementosEditaveis();
+
+atualizarStatus(
+"Clica num texto para editar."
+);
+
+}else{
+
+sairDeEdicaoAtual();
+
+botao.textContent="✏️ Editar";
+
+atualizarStatus(
+temAlteracoes
+?"Alterações por guardar."
+:"Modo normal"
+);
+}
+}
+
+
+/* =====================================================
+   PREPARAR ELEMENTOS EDITÁVEIS
+===================================================== */
+
+function prepararElementosEditaveis(){
+
+document.querySelectorAll(seletorEditavel).forEach(el=>{
+
+if(el.dataset.editorPreparado==="1") return;
+
+el.classList.add("editable-target");
+el.dataset.editorPreparado="1";
+
+el.addEventListener("click",iniciarEdicao,true);
+
+});
+}
+
+
+/* =====================================================
+   INICIAR EDIÇÃO
+===================================================== */
+
+function iniciarEdicao(event){
+
+if(!modoEdicao)return;
+
+event.preventDefault();
+event.stopPropagation();
+
+const el=event.currentTarget;
+
+if(elementoEmEdicao && elementoEmEdicao!==el){
+terminarEdicao();
+}
+
+elementoEmEdicao=el;
+conteudoOriginal=el.innerHTML;
+
+el.contentEditable="true";
+el.classList.add("editing-now");
+el.focus();
+
+colocarCursorNoFim(el);
+
+atualizarStatus(
+"✏️ A editar — clica fora para terminar."
+);
+
+el.addEventListener("blur",terminarEdicao,{once:true});
+el.addEventListener("keydown",cancelarComEscape);
+
+}
+
+
+/* =====================================================
+   CURSOR
+===================================================== */
+
+function colocarCursorNoFim(el){
+
+const range=document.createRange();
+
+range.selectNodeContents(el);
+range.collapse(false);
+
+const selection=window.getSelection();
+
+selection.removeAllRanges();
+selection.addRange(range);
+}
+
+
+/* =====================================================
+   TERMINAR EDIÇÃO
+===================================================== */
+
+function terminarEdicao(){
+
+if(!elementoEmEdicao)return;
+
+const el=elementoEmEdicao;
+
+el.contentEditable="false";
+el.classList.remove("editing-now");
+
+el.removeEventListener(
+"keydown",
+cancelarComEscape
+);
+
+elementoEmEdicao=null;
+conteudoOriginal=null;
+
+marcarAlteracao();
+
+atualizarStatus(
+"✓ Alteração registada."
+);
+
+agendarAutoSave();
+}
+
+
+/* =====================================================
+   ESC
+===================================================== */
+
+function cancelarComEscape(event){
+
+if(event.key!=="Escape")return;
+
+event.preventDefault();
+
+if(elementoEmEdicao && conteudoOriginal!==null){
+elementoEmEdicao.innerHTML=conteudoOriginal;
+}
+
+elementoEmEdicao.blur();
+}
+
+
+/* =====================================================
+   ALTERAÇÕES
+===================================================== */
+
+function marcarAlteracao(){
+temAlteracoes=true;
+}
+
+
+/* =====================================================
+   AUTO-SAVE
+===================================================== */
+
+function agendarAutoSave(){
+
+if(!document.getElementById("autoSave").checked)return;
+if(!temAlteracoes)return;
+
+clearTimeout(autoSaveTimer);
+
+autoSaveTimer=setTimeout(async()=>{
+
+if(ficheiroHandle){
+await escreverNoFicheiro();
+}else{
+atualizarStatus(
+"Alterado — usa «Guardar index.html» para gravar."
+);
+}
+
+},1000);
+}
+
+
+/* =====================================================
+   GUARDAR DIRETAMENTE NUM FICHEIRO JÁ AUTORIZADO
+===================================================== */
+
+async function escreverNoFicheiro(){
+
+if(!ficheiroHandle)return false;
+
+try{
+
+const html=prepararHTMLParaGuardar();
+
+const writable=await ficheiroHandle.createWritable();
+
+await writable.write(html);
+await writable.close();
+
+temAlteracoes=false;
+
+atualizarStatus(
+"✓ Guardado no ficheiro."
+);
+
+return true;
+
+}catch(erro){
+
+console.error(erro);
+
+ficheiroHandle=null;
+
+atualizarStatus(
+"Não foi possível gravar diretamente. Usa Guardar index.html."
+);
+
+return false;
+}
+}
+
+
+/* =====================================================
+   GUARDAR INDEX.HTML
+===================================================== */
+
+async function guardarHTML(){
+
+sairDeEdicaoAtual();
+
+const html=prepararHTMLParaGuardar();
+
+/*
+ Se já existe um ficheiro autorizado,
+ tenta gravar diretamente nele.
+*/
+
+if(ficheiroHandle){
+
+const sucesso=await escreverNoFicheiro();
+
+if(sucesso)return;
+}
+
+/*
+ Chrome / Edge:
+ permite escolher o destino e o nome do ficheiro.
+*/
+
+if("showSaveFilePicker" in window){
+
+try{
+
+const handle=await window.showSaveFilePicker({
+
+suggestedName:"index.html",
+
+types:[
+{
+description:"Página HTML",
+accept:{
+"text/html":[".html"]
+}
+}
+]
+
+});
+
+ficheiroHandle=handle;
+
+const writable=await handle.createWritable();
+
+await writable.write(html);
+await writable.close();
+
+temAlteracoes=false;
+
+atualizarStatus(
+"✓ index.html guardado com sucesso."
+);
+
+return;
+
+}catch(erro){
+
+if(erro.name==="AbortError"){
+atualizarStatus("Gravação cancelada.");
+return;
+}
+
+console.error(erro);
+}
+
+}
+
+/*
+ Fallback universal:
+ cria um novo index.html para substituir o antigo.
+*/
+
+baixarHTML(html);
+
+temAlteracoes=false;
+
+}
+
+
+/* =====================================================
+   GUARDAR COMO
+===================================================== */
+
+async function guardarComo(){
+
+sairDeEdicaoAtual();
+
+const html=prepararHTMLParaGuardar();
+
+if("showSaveFilePicker" in window){
+
+try{
+
+const handle=await window.showSaveFilePicker({
+
+suggestedName:"index.html",
+
+types:[
+{
+description:"Página HTML",
+accept:{
+"text/html":[".html"]
+}
+}
+]
+
+});
+
+ficheiroHandle=handle;
+
+const writable=await handle.createWritable();
+
+await writable.write(html);
+await writable.close();
+
+temAlteracoes=false;
+
+atualizarStatus(
+"✓ Ficheiro guardado."
+);
+
+return;
+
+}catch(erro){
+
+if(erro.name==="AbortError"){
+atualizarStatus("Gravação cancelada.");
+return;
+}
+
+console.error(erro);
+}
+
+}
+
+baixarHTML(html);
+
+}
+
+
+/* =====================================================
+   DOWNLOAD FALLBACK
+===================================================== */
+
+function baixarHTML(html){
+
+const blob=new Blob(
+[html],
+{type:"text/html;charset=utf-8"}
+);
+
+const url=URL.createObjectURL(blob);
+
+const a=document.createElement("a");
+
+a.href=url;
+a.download="index.html";
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+setTimeout(()=>{
+URL.revokeObjectURL(url);
+},1000);
+
+atualizarStatus(
+"✓ Foi criado um novo index.html — substitui o antigo por este."
+);
+
+}
+
+
+/* =====================================================
+   PREPARAR HTML
+===================================================== */
+
+function prepararHTMLParaGuardar(){
+
+/*
+ Termina uma edição antes de clonar.
+*/
+
+sairDeEdicaoAtual();
+
+const clone=document.documentElement.cloneNode(true);
+
+/*
+ Remove a barra do editor.
+*/
+
+const toolbar=clone.querySelector("#editorToolbar");
+
+if(toolbar)toolbar.remove();
+
+/*
+ Remove estado temporário do editor.
+*/
+
+clone.querySelectorAll("[contenteditable]").forEach(el=>{
+el.removeAttribute("contenteditable");
+el.classList.remove("editing-now");
+});
+
+clone.querySelectorAll(".editable-target").forEach(el=>{
+el.classList.remove("editable-target");
+el.removeAttribute("data-editor-preparado");
+});
+
+/*
+ Limpa pesquisa.
+*/
+
+clone.querySelectorAll(".content section").forEach(section=>{
+section.style.display="";
+});
+
+const cloneSearch=clone.querySelector("#search");
+
+if(cloneSearch){
+cloneSearch.value="";
+cloneSearch.removeAttribute("value");
+}
+
+/*
+ Fecha os accordions.
+*/
+
+clone.querySelectorAll(".lesson").forEach(lesson=>{
+lesson.classList.remove("open");
+});
+
+/*
+ Guarda datas no HTML.
+*/
+
+const inicio=document.getElementById("dataInicio");
+const fim=document.getElementById("dataFim");
+
+const cloneInicio=clone.querySelector("#dataInicio");
+const cloneFim=clone.querySelector("#dataFim");
+
+if(inicio && cloneInicio){
+
+cloneInicio.value=inicio.value;
+
+if(inicio.value){
+cloneInicio.setAttribute("value",inicio.value);
+}else{
+cloneInicio.removeAttribute("value");
+}
+
+}
+
+if(fim && cloneFim){
+
+cloneFim.value=fim.value;
+
+if(fim.value){
+cloneFim.setAttribute("value",fim.value);
+}else{
+cloneFim.removeAttribute("value");
+}
+
+}
+
+/*
+ Guarda checkboxes.
+*/
+
+const checks=document.querySelectorAll(
+".check-item input[type='checkbox']"
+);
+
+const cloneChecks=clone.querySelectorAll(
+".check-item input[type='checkbox']"
+);
+
+checks.forEach((check,index)=>{
+
+const cloneCheck=cloneChecks[index];
+
+if(!cloneCheck)return;
+
+if(check.checked){
+
+cloneCheck.checked=true;
+cloneCheck.setAttribute("checked","checked");
+
+}else{
+
+cloneCheck.checked=false;
+cloneCheck.removeAttribute("checked");
+
+}
+
+});
+
+/*
+ Remove estado edit-mode.
+*/
+
+const body=clone.querySelector("body");
+
+if(body){
+body.classList.remove("edit-mode");
+}
+
+/*
+ Gera HTML completo.
+*/
+
+return "<!DOCTYPE html>\n"+clone.outerHTML;
+}
+
+
+/* =====================================================
+   SAIR DA EDIÇÃO ATUAL
+===================================================== */
+
+function sairDeEdicaoAtual(){
+
+if(!elementoEmEdicao)return;
+
+const el=elementoEmEdicao;
+
+el.contentEditable="false";
+el.classList.remove("editing-now");
+
+el.removeEventListener(
+"keydown",
+cancelarComEscape
+);
+
+elementoEmEdicao=null;
+conteudoOriginal=null;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function atualizarStatus(texto){
+
+const status=document.getElementById("editorStatus");
+
+if(status){
+status.textContent=texto;
+}
+
+}
+
+
+/* =====================================================
+   DATAS
+===================================================== */
+
+function guardarDatas(){
+
+const inicio=document.getElementById("dataInicio").value;
+const fim=document.getElementById("dataFim").value;
+
+localStorage.setItem(
+"uc02285-data-inicio",
+inicio
+);
+
+localStorage.setItem(
+"uc02285-data-fim",
+fim
+);
+
+marcarAlteracao();
+
+atualizarStatus("📅 Datas atualizadas.");
+
+agendarAutoSave();
+}
+
+
+function carregarDatas(){
+
+const inicio=localStorage.getItem(
+"uc02285-data-inicio"
+);
+
+const fim=localStorage.getItem(
+"uc02285-data-fim"
+);
+
+if(inicio){
+document.getElementById("dataInicio").value=inicio;
+}
+
+if(fim){
+document.getElementById("dataFim").value=fim;
+}
+
+}
+
+
+/* =====================================================
+   PROGRESSO
+===================================================== */
+
+function updateProgress(){
+
+const checks=document.querySelectorAll(
+".check-item input"
+);
+
+let checked=0;
+
+checks.forEach(check=>{
+if(check.checked)checked++;
+});
+
+const total=checks.length;
+
+const percent=total
+?Math.round(checked/total*100)
+:0;
+
+document.getElementById("progressFill").style.width=
+percent+"%";
+
+document.getElementById("progressNumber").textContent=
+percent+"%";
+
+localStorage.setItem(
+"uc02285-progress",
+JSON.stringify(
+Array.from(checks).map(check=>check.checked)
+)
+);
+
+if(modoEdicao){
+
+marcarAlteracao();
+
+atualizarStatus(
+"✓ Progresso atualizado."
+);
+
+agendarAutoSave();
+}
+
+}
+
+
+/* =====================================================
+   CARREGAR PROGRESSO
+===================================================== */
+
+function carregarProgresso(){
+
+const dados=localStorage.getItem(
+"uc02285-progress"
+);
+
+if(!dados){
+
+updateProgress();
+return;
+}
+
+try{
+
+const estados=JSON.parse(dados);
+
+const checks=document.querySelectorAll(
+".check-item input"
+);
+
+checks.forEach((check,index)=>{
+check.checked=!!estados[index];
+});
+
+}catch(erro){
+
+console.warn(
+"Não foi possível carregar o progresso.",
+erro
+);
+
+}
+
+updateProgress();
+}
+
+
+/* =====================================================
+   ACCORDION
+===================================================== */
+
+function toggleLesson(header){
+
+const lesson=header.parentElement;
+
+lesson.classList.toggle("open");
+
+if(modoEdicao){
+
+marcarAlteracao();
+agendarAutoSave();
+
+}
+
+}
+
+
+/* =====================================================
+   PESQUISA
+===================================================== */
+
+function pesquisar(){
+
+const termo=document
+.getElementById("search")
+.value
+.toLowerCase()
+.trim();
+
+const sections=document.querySelectorAll(
+".content section"
+);
+
+sections.forEach(section=>{
+
+if(!termo){
+
+section.style.display="";
+return;
+
+}
+
+const texto=section.innerText.toLowerCase();
+
+section.style.display=
+texto.includes(termo)
+?""
+:"none";
+
+});
+
+}
+
+
+/* =====================================================
+   SIDEBAR MOBILE
+===================================================== */
+
+function toggleSidebar(){
+
+document
+.getElementById("sidebar")
+.classList.toggle("show");
+
+}
+
+
+/* =====================================================
+   FECHAR SIDEBAR
+===================================================== */
+
+document.querySelectorAll(".nav a").forEach(link=>{
+
+link.addEventListener("click",()=>{
+
+document
+.getElementById("sidebar")
+.classList.remove("show");
+
+});
+
+});
+
+
+/* =====================================================
+   CHECKBOXES
+===================================================== */
+
+document.querySelectorAll(
+".check-item input"
+).forEach(checkbox=>{
+
+checkbox.addEventListener(
+"change",
+()=>{
+
+if(modoEdicao){
+
+marcarAlteracao();
+agendarAutoSave();
+
+}
+
+}
+);
+
+});
+
+
+/* =====================================================
+   CTRL + S
+===================================================== */
+
+document.addEventListener(
+"keydown",
+event=>{
+
+if(
+(event.ctrlKey || event.metaKey) &&
+event.key.toLowerCase()==="s"
+){
+
+event.preventDefault();
+
+guardarHTML();
+
+}
+
+}
+);
+
+
+/* =====================================================
+   AVISO AO SAIR
+===================================================== */
+
+window.addEventListener(
+"beforeunload",
+event=>{
+
+if(temAlteracoes){
+
+event.preventDefault();
+event.returnValue="";
+
+}
+
+}
+);
+
+
+/* =====================================================
+   INICIALIZAÇÃO
+===================================================== */
+
+carregarDatas();
+carregarProgresso();
+
+</script>
+
+
+</body></html>
